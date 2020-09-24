@@ -12,6 +12,7 @@ public class DataException extends RuntimeException{
     private Object data;
 
     public DataException(String code, String msg, Object data) {
+        super(msg);
         this.code = code;
         this.msg = msg;
         this.data = data;

@@ -102,6 +102,22 @@ public class CheckUtils {
     }
 
     /**
+     * 空值检查
+     *
+     * @param object
+     * @param message
+     * @param code
+     * @param data
+     */
+    public static <T> T objectCheckNull(T object, String message, String code, Object data) {
+        if (isEmpty(object)) {
+            throw new DataException(code, message, data);
+        }
+        return object;
+    }
+
+
+    /**
      * 对象是否不为空(新增)
      *
      * @return
@@ -146,6 +162,14 @@ public class CheckUtils {
             }
         } else if (o instanceof long[]) {
             if (((long[]) o).length == 0) {
+                return true;
+            }
+        } else if (o instanceof byte[]) {
+            if (((byte[]) o).length == 0) {
+                return true;
+            }
+        } else if (o instanceof float[]) {
+            if (((float[]) o).length == 0) {
                 return true;
             }
         }
