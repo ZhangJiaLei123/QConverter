@@ -12,7 +12,7 @@ public class DataException extends RuntimeException{
     private Object data;
 
     public DataException(String code, String msg, Object data) {
-        super(msg);
+        super(String.format(code == null ? "%s" : "%s, 错误码:%s", msg, code));
         this.code = code;
         this.msg = msg;
         this.data = data;

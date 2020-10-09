@@ -1,9 +1,11 @@
 package com.blxt.utils.check;
 
+
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +18,7 @@ import java.util.Set;
  */
 public class CheckUtils {
 
-    /** demo */
+///** demo */
 //
 //    @Override
 //    public Map post(Map<String,String> record) {
@@ -102,8 +104,40 @@ public class CheckUtils {
     }
 
     /**
+     * 判断是否是文件,如果文件不存在,或者是文件夹,将抛出异常
+     * @param file
+     * @param message
+     * @param code
+     * @param data
+     */
+    public static void checkFile(File file, String message, String code, Object data){
+        if(isEmpty(file)){
+            throw new DataException(code, message, data);
+        }
+        if(!file.isFile()){
+            throw new DataException(code, message, data);
+        }
+    }
+
+    /**
+     * 判断是否是文件夹, 如果文件夹不存在,或则是文件,就抛出异常
+     * @param file
+     * @param message
+     * @param code
+     * @param data
+     */
+    public static void checkFileDirectory(File file, String message, String code, Object data){
+        if(isEmpty(file)){
+            throw new DataException(code, message, data);
+        }
+        if(!file.isDirectory()){
+            throw new DataException(code, message, data);
+        }
+    }
+
+    /**
      * 空值检查
-     *
+     * 如果控制,就抛出异常
      * @param object
      * @param message
      * @param code
@@ -116,6 +150,20 @@ public class CheckUtils {
         return object;
     }
 
+    /**
+     * 非空值检查
+     * 如果非空值,就抛出异常
+     * @param object
+     * @param message
+     * @param code
+     * @param data
+     */
+    public static <T> T objectCheckNotNull(T object, String message, String code, Object data) {
+        if (isNotEmpty(object)) {
+            throw new DataException(code, message, data);
+        }
+        return object;
+    }
 
     /**
      * 对象是否不为空(新增)
@@ -150,6 +198,10 @@ public class CheckUtils {
             }
         } else if (o instanceof Set) {
             if (((Set) o).size() == 0) {
+                return true;
+            }
+        } else if(o instanceof File){
+            if (!((File) o).exists()) {
                 return true;
             }
         } else if (o instanceof Object[]) {
