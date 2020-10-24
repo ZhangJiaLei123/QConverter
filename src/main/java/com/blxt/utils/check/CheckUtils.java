@@ -1,9 +1,8 @@
 package com.blxt.utils.check;
 
 
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
+import com.blxt.utils.check.utils.StringCheck;
+
 
 import java.io.File;
 import java.util.List;
@@ -18,122 +17,118 @@ import java.util.Set;
  */
 public class CheckUtils {
 
-///** demo */
-//
-//    @Override
-//    public Map post(Map<String,String> record) {
-//        FieldUtils.stringIsNullCheck(record.get("username"), "用户名不能为空", CODE, "");
-//        FieldUtils.stringIsNullCheck(record.get("password"), "密码不能为空", CODE, "");
-//        FieldUtils.stringIsNullCheck(record.get("sex"), "性别不能为空", CODE, "");
-//        FieldUtils.isNumberCheck(record.get("age"), "输入的年龄不合法", CODE, "");
-//        FieldUtils.isIntCheck(record.get("age2"), "请输入整数", CODE, "");
-//        FieldUtils.isEmailCheck(record.get("email"), "请输入正确的邮件", CODE, "");
-//        FieldUtils.isMobileCheck(record.get("mobile"), "请输入正确的手机号", CODE, "");
-//        //dao逻辑操作
-//        return record;
-//    }
-
     /**
-     * 字符串非空校验
-     *
-     * @param filed   要校验的字段
-     * @param message message
-     * @param code    code
-     * @param data    data
+     * 字符串校验
      */
-    public static void stringIsNullCheck(String filed, String message, String code, Object data) {
-        if (StrUtil.isBlank(filed)) {
-            throw new DataException(code, message, data);
+    public static class STR{
+        /**
+         * 字符串非空校验
+         *
+         * @param filed   要校验的字段
+         * @param message message
+         * @param code    code
+         * @param data    data
+         */
+        public static void stringIsNullCheck(String filed, String message, String code, Object data) {
+            if (StringCheck.isBlank(filed)) {
+                throw new DataException(code, message, data);
+            }
+        }
+
+        /**
+         * 数字校验
+         *
+         * @param filed   要校验的字段
+         * @param message message
+         * @param code    code
+         * @param data    data
+         */
+        public static void isNumberCheck(String filed, String message, String code, Object data) {
+            if (!StringCheck.isNumber(filed)) {
+                throw new DataException(code, message, data);
+            }
+        }
+
+
+
+        /**
+         * 整数校验
+         *
+         * @param filed   要校验的字段
+         * @param message message
+         * @param code    code
+         * @param data    data
+         */
+        public static void isIntCheck(String filed, String message, String code, Object data) {
+            if (!StringCheck.isInteger(filed)) {
+                throw new DataException(code, message, data);
+            }
+        }
+
+        /**
+         * 邮件校验
+         *
+         * @param filed   要校验的字段
+         * @param message message
+         * @param code    code
+         * @param data    data
+         */
+        public static void isEmailCheck(String filed, String message, String code, Object data) {
+            if (!StringCheck.isEmail(filed)) {
+                throw new DataException(code, message, data);
+            }
+        }
+
+        /**
+         * 手机号校验
+         *
+         * @param filed   要校验的字段
+         * @param message message
+         * @param code    code
+         * @param data    data
+         */
+        public static void isMobileCheck(String filed, String message, String code, Object data) {
+            if (!StringCheck.isMobile(filed)) {
+                throw new DataException(code, message, data);
+            }
         }
     }
 
-    /**
-     * 数字校验
-     *
-     * @param filed   要校验的字段
-     * @param message message
-     * @param code    code
-     * @param data    data
-     */
-    public static void isNumberCheck(String filed, String message, String code, Object data) {
-        if (!NumberUtil.isNumber(filed)) {
-            throw new DataException(code, message, data);
+    public static class FILE{
+        /**
+         * 判断是否是文件,如果文件不存在,或者是文件夹,将抛出异常
+         * @param file
+         * @param message
+         * @param code
+         * @param data
+         */
+        public static void checkFile(File file, String message, String code, Object data){
+            if(isEmpty(file)){
+                throw new DataException(code, message, data);
+            }
+            if(!file.isFile()){
+                throw new DataException(code, message, data);
+            }
         }
+
+        /**
+         * 判断是否是文件夹, 如果文件夹不存在,或则是文件,就抛出异常
+         * @param file
+         * @param message
+         * @param code
+         * @param data
+         */
+        public static void checkFileDirectory(File file, String message, String code, Object data){
+            if(isEmpty(file)){
+                throw new DataException(code, message, data);
+            }
+            if(!file.isDirectory()){
+                throw new DataException(code, message, data);
+            }
+        }
+
     }
 
-    /**
-     * 整数校验
-     *
-     * @param filed   要校验的字段
-     * @param message message
-     * @param code    code
-     * @param data    data
-     */
-    public static void isIntCheck(String filed, String message, String code, Object data) {
-        if (!NumberUtil.isInteger(filed)) {
-            throw new DataException(code, message, data);
-        }
-    }
-
-    /**
-     * 邮件校验
-     *
-     * @param filed   要校验的字段
-     * @param message message
-     * @param code    code
-     * @param data    data
-     */
-    public static void isEmailCheck(String filed, String message, String code, Object data) {
-        if (!Validator.isEmail(filed)) {
-            throw new DataException(code, message, data);
-        }
-    }
-
-    /**
-     * 手机号校验
-     *
-     * @param filed   要校验的字段
-     * @param message message
-     * @param code    code
-     * @param data    data
-     */
-    public static void isMobileCheck(String filed, String message, String code, Object data) {
-        if (!Validator.isMobile(filed)) {
-            throw new DataException(code, message, data);
-        }
-    }
-
-    /**
-     * 判断是否是文件,如果文件不存在,或者是文件夹,将抛出异常
-     * @param file
-     * @param message
-     * @param code
-     * @param data
-     */
-    public static void checkFile(File file, String message, String code, Object data){
-        if(isEmpty(file)){
-            throw new DataException(code, message, data);
-        }
-        if(!file.isFile()){
-            throw new DataException(code, message, data);
-        }
-    }
-
-    /**
-     * 判断是否是文件夹, 如果文件夹不存在,或则是文件,就抛出异常
-     * @param file
-     * @param message
-     * @param code
-     * @param data
-     */
-    public static void checkFileDirectory(File file, String message, String code, Object data){
-        if(isEmpty(file)){
-            throw new DataException(code, message, data);
-        }
-        if(!file.isDirectory()){
-            throw new DataException(code, message, data);
-        }
-    }
 
     /**
      * 空值检查

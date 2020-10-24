@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class Converter {
 
+
     /**
      * byte[] 转 char[]
      * @param bytes
