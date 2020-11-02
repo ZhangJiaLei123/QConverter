@@ -113,11 +113,12 @@ public class Converter {
     /**
      * 16进制字符串转 byte
      * 如 A1 B3 FE 转成 byte[]
-     * @param content
+     * @param content  数据
+     * @param split    数据分隔符, 如' '或'0x'
      * @return
      */
-    public static byte[] toBytesFormat(String content) {
-        String[] beans = content.split(" ");
+    public static byte[] toBytesByFormat(String content, String split) {
+        String[] beans = content.split(split);
         byte[] byteNum = new byte[beans.length];
 
         int index = 0;

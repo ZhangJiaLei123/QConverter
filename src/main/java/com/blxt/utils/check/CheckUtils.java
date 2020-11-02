@@ -132,7 +132,7 @@ public class CheckUtils {
 
     /**
      * 空值检查
-     * 如果控制,就抛出异常
+     * 如果非空,就抛出异常
      * @param object
      * @param message
      * @param code

@@ -129,6 +129,20 @@ public class IPTools {
 
 
     /**
+     * 判断远端主机ip是否存在
+     * @param ip       ip
+     * @param outTime  超时
+     * @return
+     */
+    public static boolean checkHostIP(String ip, int outTime){
+        try {
+            return InetAddress.getByName(ip).isReachable(3000);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * 判断ip端口是否开放,Socket原理
      * @param hostIp   主机
      * @param port	   端口
